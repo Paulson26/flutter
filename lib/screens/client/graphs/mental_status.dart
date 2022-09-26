@@ -160,27 +160,27 @@ class ChartState extends State<Chart> {
               child: Text('Mental Status',
                   style: TextStyle(fontWeight: FontWeight.bold)),
             ),
-            const SizedBox(
-              height: 60,
-            ),
-            _buildDefaultColumnCharts(),
-            const SizedBox(
-              height: 10,
-            ),
-            Center(
-              child:
-                  Text(q, style: const TextStyle(fontWeight: FontWeight.bold)),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            const Center(
-              child: Text('Client Progress',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-            ),
-            const SizedBox(
-              height: 60,
-            ),
+            // const SizedBox(
+            //   height: 60,
+            // ),
+            // _buildDefaultColumnCharts(),
+            // const SizedBox(
+            //   height: 10,
+            // ),
+            // Center(
+            //   child:
+            //       Text(q, style: const TextStyle(fontWeight: FontWeight.bold)),
+            // ),
+            // const SizedBox(
+            //   height: 5,
+            // ),
+            // const Center(
+            //   child: Text('Client Progress',
+            //       style: TextStyle(fontWeight: FontWeight.bold)),
+            // ),
+            // const SizedBox(
+            //   height: 60,
+            // ),
           ],
         ),
       ),
@@ -203,20 +203,20 @@ class ChartState extends State<Chart> {
     );
   }
 
-  SfCartesianChart _buildDefaultColumnCharts() {
-    return SfCartesianChart(
-      plotAreaBorderWidth: 0,
-      primaryXAxis: CategoryAxis(
-        majorGridLines: const MajorGridLines(width: 0),
-      ),
-      primaryYAxis: NumericAxis(
-          axisLine: const AxisLine(width: 0),
-          labelFormat: '{value}',
-          majorTickLines: const MajorTickLines(size: 0)),
-      series: _getDefaultColumnSerie(),
-      tooltipBehavior: _tooltipBehavior,
-    );
-  }
+  // SfCartesianChart _buildDefaultColumnCharts() {
+  //   return SfCartesianChart(
+  //     plotAreaBorderWidth: 0,
+  //     primaryXAxis: CategoryAxis(
+  //       majorGridLines: const MajorGridLines(width: 0),
+  //     ),
+  //     primaryYAxis: NumericAxis(
+  //         axisLine: const AxisLine(width: 0),
+  //         labelFormat: '{value}',
+  //         majorTickLines: const MajorTickLines(size: 0)),
+  //     series: _getDefaultColumnSerie(),
+  //     tooltipBehavior: _tooltipBehavior,
+  //   );
+  // }
 
   /// Get default column series
   List<ColumnSeries<ChartSampleData, String>> _getDefaultColumnSeries() {
@@ -239,18 +239,18 @@ class ChartState extends State<Chart> {
     ];
   }
 
-  List<ColumnSeries<ChartSampleData, String>> _getDefaultColumnSerie() {
-    return <ColumnSeries<ChartSampleData, String>>[
-      ColumnSeries<ChartSampleData, String>(
-        dataSource: <ChartSampleData>[
-          ChartSampleData(x: 'Client Progress', y: w),
-          ChartSampleData(x: 'Clinician Progress', y: t),
-        ],
-        xValueMapper: (ChartSampleData sales, _) => sales.x,
-        yValueMapper: (ChartSampleData sales, _) => sales.y,
-        dataLabelSettings: const DataLabelSettings(
-            isVisible: true, textStyle: TextStyle(fontSize: 12)),
-      )
-    ];
-  }
+  // List<ColumnSeries<ChartSampleData, String>> _getDefaultColumnSerie() {
+  //   return <ColumnSeries<ChartSampleData, String>>[
+  //     ColumnSeries<ChartSampleData, String>(
+  //       dataSource: <ChartSampleData>[
+  //         ChartSampleData(x: 'Client Progress', y: w),
+  //         ChartSampleData(x: 'Clinician Progress', y: t),
+  //       ],
+  //       xValueMapper: (ChartSampleData sales, _) => sales.x,
+  //       yValueMapper: (ChartSampleData sales, _) => sales.y,
+  //       dataLabelSettings: const DataLabelSettings(
+  //           isVisible: true, textStyle: TextStyle(fontSize: 12)),
+  //     )
+  //   ];
+  // }
 }
