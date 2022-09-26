@@ -77,64 +77,11 @@ class ChartState extends State<Chart> {
     return resultsJson;
   }
 
-  Future fetchProgress() async {
-    const storage = FlutterSecureStorage();
-    var myJwt = await storage.read(key: "jwt");
-    var clientid = await storage.read(key: "client_id");
-    var cliniccode = await storage.read(key: "clinic_code");
-    final uri = Uri.parse('http://10.0.2.2:8000/api/v1/get-client-progress/')
-        .replace(queryParameters: {
-      'client_id': clientid.toString(),
-    });
-    final response = await http.get(
-      uri,
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': 'JWT $myJwt',
-        'clinic_code': '$cliniccode'
-      },
-    );
-    var results = json.decode(response.body);
-    print(results);
-    setState(() {
-      progress.add({
-        date = results['data']['xAxis'],
-        clientprgrs = results['data']['yAxisClient'],
-        clinicianprog = results['data']['yAxisClinician'],
-      });
-
-      for (var j = 0; j < date.length; j++) {
-        dat.add({
-          'x': date[j],
-        });
-      }
-      for (var j = 0; j < clientprgrs.length; j++) {
-        p.add({
-          'y': date[j],
-        });
-      }
-      for (var j = 0; j < clinicianprog.length; j++) {
-        pro.add({'z': clinicianprog[j]});
-      }
-    });
-    q = dat[0]['x'].toString();
-
-    if (p.isEmpty) {
-      w = 0;
-    } else {
-      w = p[0]['x'];
-    }
-    t = pro[0]['z'];
-    print(q);
-    return results;
-  }
-
   TooltipBehavior? _tooltipBehavior;
   @override
   void initState() {
     fetchResults();
-    fetchProgress();
+
     super.initState();
     _tooltipBehavior =
         TooltipBehavior(enable: true, header: '', canShowMarker: false);
@@ -160,27 +107,6 @@ class ChartState extends State<Chart> {
               child: Text('Mental Status',
                   style: TextStyle(fontWeight: FontWeight.bold)),
             ),
-            // const SizedBox(
-            //   height: 60,
-            // ),
-            // _buildDefaultColumnCharts(),
-            // const SizedBox(
-            //   height: 10,
-            // ),
-            // Center(
-            //   child:
-            //       Text(q, style: const TextStyle(fontWeight: FontWeight.bold)),
-            // ),
-            // const SizedBox(
-            //   height: 5,
-            // ),
-            // const Center(
-            //   child: Text('Client Progress',
-            //       style: TextStyle(fontWeight: FontWeight.bold)),
-            // ),
-            // const SizedBox(
-            //   height: 60,
-            // ),
           ],
         ),
       ),
@@ -203,21 +129,6 @@ class ChartState extends State<Chart> {
     );
   }
 
-  // SfCartesianChart _buildDefaultColumnCharts() {
-  //   return SfCartesianChart(
-  //     plotAreaBorderWidth: 0,
-  //     primaryXAxis: CategoryAxis(
-  //       majorGridLines: const MajorGridLines(width: 0),
-  //     ),
-  //     primaryYAxis: NumericAxis(
-  //         axisLine: const AxisLine(width: 0),
-  //         labelFormat: '{value}',
-  //         majorTickLines: const MajorTickLines(size: 0)),
-  //     series: _getDefaultColumnSerie(),
-  //     tooltipBehavior: _tooltipBehavior,
-  //   );
-  // }
-
   /// Get default column series
   List<ColumnSeries<ChartSampleData, String>> _getDefaultColumnSeries() {
     return <ColumnSeries<ChartSampleData, String>>[
@@ -238,19 +149,4 @@ class ChartState extends State<Chart> {
       )
     ];
   }
-
-  // List<ColumnSeries<ChartSampleData, String>> _getDefaultColumnSerie() {
-  //   return <ColumnSeries<ChartSampleData, String>>[
-  //     ColumnSeries<ChartSampleData, String>(
-  //       dataSource: <ChartSampleData>[
-  //         ChartSampleData(x: 'Client Progress', y: w),
-  //         ChartSampleData(x: 'Clinician Progress', y: t),
-  //       ],
-  //       xValueMapper: (ChartSampleData sales, _) => sales.x,
-  //       yValueMapper: (ChartSampleData sales, _) => sales.y,
-  //       dataLabelSettings: const DataLabelSettings(
-  //           isVisible: true, textStyle: TextStyle(fontSize: 12)),
-  //     )
-  //   ];
-  // }
 }
