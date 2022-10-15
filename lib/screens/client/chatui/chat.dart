@@ -6,7 +6,6 @@ import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:my_thera/apis/appointment.dart';
 import 'package:my_thera/screens/client/chatui/message.dart';
-import 'package:my_thera/screens/client/chatui/try_out.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:observable/observable.dart';
 
@@ -38,7 +37,7 @@ class _chatpageState extends State<chatpage> {
     required this.receiver_name,
   });
   late Future<List<Message>> future;
-  final TextEditingController message = new TextEditingController();
+  final TextEditingController message = TextEditingController();
   // Future<List<Message>> fetchResult() async {
   //   var rid = "${widget.receiver}";
   //   const storage = FlutterSecureStorage();
@@ -93,7 +92,7 @@ class _chatpageState extends State<chatpage> {
     super.dispose();
   }
 
-  void initializeSocket() {
+  void initializeSocket() async {
     socket = io("http://127.0.0.1:3000/", <String, dynamic>{
       "transports": ["websocket"],
       "autoConnect": false,
@@ -159,11 +158,11 @@ class _chatpageState extends State<chatpage> {
                           left: 14.0, bottom: 8.0, top: 8.0),
                       focusedBorder: OutlineInputBorder(
                         borderSide: const BorderSide(color: Colors.purple),
-                        borderRadius: new BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(10),
                       ),
                       enabledBorder: UnderlineInputBorder(
                         borderSide: const BorderSide(color: Colors.purple),
-                        borderRadius: new BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(10),
                       ),
                     ),
                     onSaved: (value) {
@@ -243,6 +242,4 @@ class _chatpageState extends State<chatpage> {
       ),
     );
   }
-
-  void notifyListeners() {}
 }

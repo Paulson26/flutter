@@ -30,6 +30,7 @@ class ChartState extends State<Chart> {
   List dat = [];
   List xa = [];
   List progress = [];
+  List assesmtscr = [];
   int a = 0;
   int b = 0;
   int c = 0;
@@ -37,6 +38,7 @@ class ChartState extends State<Chart> {
   int e = 0;
   int f = 0;
   int g = 0;
+
   Future fetchResults() async {
     const storage = FlutterSecureStorage();
     var myJwt = await storage.read(key: "jwt");
@@ -65,6 +67,7 @@ class ChartState extends State<Chart> {
           i++;
         }
       }
+      print(xa);
       a = xa[0]['y'];
       b = xa[1]['y'];
       c = xa[2]['y'];
@@ -77,13 +80,106 @@ class ChartState extends State<Chart> {
     return resultsJson;
   }
 
+  Future fetchResult1() async {
+    const storage = FlutterSecureStorage();
+    var myJwt = await storage.read(key: "jwt");
+    var clientid = await storage.read(key: "client_id");
+    var cliniccode = await storage.read(key: "clinic_code");
+    final uri = Uri.parse('http://10.0.2.2:8000/api/v1/get-client-asmt-score/')
+        .replace(queryParameters: {
+      'client_id': clientid.toString(),
+    });
+    final response = await http.get(
+      uri,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'JWT $myJwt',
+        'clinic_code': '$cliniccode'
+      },
+    );
+    print(response.body);
+    var resultsJson = json.decode(response.body)['data'];
+    setState(() {
+      var xaxis1 = resultsJson['xAxis'];
+      var yaxis2 = resultsJson['yAxis'];
+      for (var i = 0; i < xaxis1.length; i++) {
+        for (var j = 0; j < yaxis2.length; j++) {
+          assesmtscr.add({'x': xaxis1[i], 'y': yaxis2[j]});
+          i++;
+        }
+      }
+    });
+    print(assesmtscr);
+    return resultsJson;
+  }
+
+  Future fetchProgress() async {
+    const storage = FlutterSecureStorage();
+    var myJwt = await storage.read(key: "jwt");
+    var clientid = await storage.read(key: "client_id");
+    var cliniccode = await storage.read(key: "clinic_code");
+    final uri = Uri.parse('http://10.0.2.2:8000/api/v1/get-client-progress/')
+        .replace(queryParameters: {
+      'client_id': clientid.toString(),
+    });
+    final response = await http.get(
+      uri,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'JWT $myJwt',
+        'clinic_code': '$cliniccode'
+      },
+    );
+    var results = json.decode(response.body);
+
+    setState(() {
+      progress.add({
+        date = results['data']['xAxis'],
+        clientprgrs = results['data']['yAxisClient'],
+        clinicianprog = results['data']['yAxisClinician'],
+      });
+
+      for (var j = 0; j < date.length; j++) {
+        dat.add({
+          'x': date[j],
+        });
+      }
+      for (var j = 0; j < clientprgrs.length; j++) {
+        p.add({
+          'y': clientprgrs[j],
+        });
+      }
+      for (var j = 0; j < clinicianprog.length; j++) {
+        pro.add({'z': clinicianprog[j]});
+      }
+    });
+    q = dat[0]['x'].toString();
+
+    if (p.isEmpty) {
+      w = 0;
+    } else {
+      w = p[0]['y'];
+    }
+    t = pro[0]['z'];
+    return results;
+  }
+
   TooltipBehavior? _tooltipBehavior;
+  TooltipBehavior? _tooltipBehavior1;
+  TooltipBehavior? _tooltipBehavior2;
   @override
   void initState() {
     fetchResults();
-
+    fetchResult1();
+    fetchProgress();
     super.initState();
     _tooltipBehavior =
+        TooltipBehavior(enable: true, header: '', canShowMarker: false);
+    _tooltipBehavior1 =
+        TooltipBehavior(enable: true, header: '', canShowMarker: false);
+    _tooltipBehavior2 =
         TooltipBehavior(enable: true, header: '', canShowMarker: false);
   }
 
@@ -107,6 +203,41 @@ class ChartState extends State<Chart> {
               child: Text('Mental Status',
                   style: TextStyle(fontWeight: FontWeight.bold)),
             ),
+            const SizedBox(
+              height: 60,
+            ),
+            _buildDefaultColumnCharts(),
+            const SizedBox(
+              height: 10,
+            ),
+            Center(
+              child:
+                  Text(q, style: const TextStyle(fontWeight: FontWeight.bold)),
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            const Center(
+              child: Text('Client Progress',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+            ),
+            const SizedBox(
+              height: 60,
+            ),
+            const SizedBox(
+              height: 60,
+            ),
+            _buildDefaultColumnChart1(),
+            const SizedBox(
+              height: 10,
+            ),
+            const Center(
+              child: Text('Assessment Scores',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+            ),
+            const SizedBox(
+              height: 60,
+            ),
           ],
         ),
       ),
@@ -116,7 +247,7 @@ class ChartState extends State<Chart> {
   /// Get default column chart
   SfCartesianChart _buildDefaultColumnChart() {
     return SfCartesianChart(
-      plotAreaBorderWidth: 0,
+      plotAreaBorderWidth: 4,
       primaryXAxis: CategoryAxis(
         majorGridLines: const MajorGridLines(width: 0),
       ),
@@ -126,6 +257,36 @@ class ChartState extends State<Chart> {
           majorTickLines: const MajorTickLines(size: 0)),
       series: _getDefaultColumnSeries(),
       tooltipBehavior: _tooltipBehavior,
+    );
+  }
+
+  SfCartesianChart _buildDefaultColumnCharts() {
+    return SfCartesianChart(
+      plotAreaBorderWidth: 4,
+      primaryXAxis: CategoryAxis(
+        majorGridLines: const MajorGridLines(width: 0),
+      ),
+      primaryYAxis: NumericAxis(
+          axisLine: const AxisLine(width: 0),
+          labelFormat: '{value}',
+          majorTickLines: const MajorTickLines(size: 0)),
+      series: _getDefaultColumnSerie(),
+      tooltipBehavior: _tooltipBehavior1,
+    );
+  }
+
+  SfCartesianChart _buildDefaultColumnChart1() {
+    return SfCartesianChart(
+      plotAreaBorderWidth: 4,
+      primaryXAxis: CategoryAxis(
+        majorGridLines: const MajorGridLines(width: 0),
+      ),
+      primaryYAxis: NumericAxis(
+          axisLine: const AxisLine(width: 0),
+          labelFormat: '{value}',
+          majorTickLines: const MajorTickLines(size: 0)),
+      series: _getDefaultColumnSeries1(),
+      tooltipBehavior: _tooltipBehavior2,
     );
   }
 
@@ -147,6 +308,36 @@ class ChartState extends State<Chart> {
         dataLabelSettings: const DataLabelSettings(
             isVisible: true, textStyle: TextStyle(fontSize: 12)),
       )
+    ];
+  }
+
+  List<ColumnSeries<ChartSampleData, String>> _getDefaultColumnSerie() {
+    return <ColumnSeries<ChartSampleData, String>>[
+      ColumnSeries<ChartSampleData, String>(
+        dataSource: <ChartSampleData>[
+          ChartSampleData(x: 'Client Progress', y: w),
+          ChartSampleData(x: 'Clinician Progress', y: t),
+        ],
+        xValueMapper: (ChartSampleData sales, _) => sales.x,
+        yValueMapper: (ChartSampleData sales, _) => sales.y,
+        dataLabelSettings: const DataLabelSettings(
+            isVisible: true, textStyle: TextStyle(fontSize: 10)),
+      )
+    ];
+  }
+
+  List<ColumnSeries<ChartSampleData, String>> _getDefaultColumnSeries1() {
+    return <ColumnSeries<ChartSampleData, String>>[
+      for (var i = 0; i < assesmtscr.length; i++)
+        ColumnSeries<ChartSampleData, String>(
+          dataSource: <ChartSampleData>[
+            ChartSampleData(x: (i + 1), y: assesmtscr[i]['y']),
+          ],
+          xValueMapper: (ChartSampleData sales, _) => sales.x,
+          yValueMapper: (ChartSampleData sales, _) => sales.y,
+          dataLabelSettings: const DataLabelSettings(
+              isVisible: true, textStyle: TextStyle(fontSize: 12)),
+        )
     ];
   }
 }

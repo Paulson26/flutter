@@ -347,7 +347,10 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                           uploadImage("Uploaded", selectedImage!);
 
                       Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(builder: (context) => MainScreen()),
+                          MaterialPageRoute(
+                              builder: (context) => MainScreen(
+                                    appt: null,
+                                  )),
                           (route) => false);
                       Fluttertoast.showToast(
                           msg:
@@ -359,7 +362,10 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                           fontSize: 16.0);
                     } else {
                       Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(builder: (context) => MainScreen()),
+                          MaterialPageRoute(
+                              builder: (context) => MainScreen(
+                                    appt: null,
+                                  )),
                           (route) => false);
                       Fluttertoast.showToast(
                           msg:

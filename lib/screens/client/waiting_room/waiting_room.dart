@@ -22,13 +22,6 @@ class _WaitingRoomState extends State<WaitingRoom> {
 
     fetchApp();
 
-    // Future gg() async {
-    //   const storage = FlutterSecureStorage();
-    //   clientid = await storage.read(key: "client_id");
-    //   print(clientid);
-    // }
-
-    // gg();
     var today = DateTime.now();
     var dateStr = DateFormat('MM-dd-yyyy');
     currentDate = dateStr.format(today);

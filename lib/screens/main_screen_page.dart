@@ -1,8 +1,10 @@
-// ignore_for_file: unused_field, prefer_const_constructors
+// ignore_for_file: unused_field, prefer_const_constructors, prefer_typing_uninitialized_variables
 
 import 'package:flutter/material.dart';
+import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:my_thera/screens/client/appointment/appointment_view.dart';
 import 'package:my_thera/screens/client/appointment/test.dart';
+import 'package:my_thera/screens/client/calendar/calendar.dart';
 import 'package:my_thera/screens/client/chatui/clinician_admin_list/topbar_view.dart';
 import 'package:my_thera/screens/client/feedback/dropdown.dart';
 import 'package:my_thera/screens/bottom_navigation.dart';
@@ -14,12 +16,43 @@ import 'package:my_thera/screens/client/password_change.dart';
 import 'package:my_thera/screens/client/payment/biiling_payment.dart';
 import 'package:my_thera/screens/client/profile/MainProfile.dart';
 import 'package:my_thera/screens/client/waiting_room/pending.dart';
+import 'package:my_thera/screens/client/waiting_room/waiting_room.dart';
 import 'package:my_thera/screens/colors/colors.dart';
 import 'package:my_thera/screens/login/login_page.dart';
 
-class MainScreen extends StatelessWidget {
-  MainScreen({Key? key}) : super(key: key);
-  final _pages = [HomePage(), JsonDataGrid(), Pending(), Billinf()];
+class MainScreen extends StatefulWidget {
+  MainScreen({
+    Key? key,
+    required this.appt,
+  }) : super(key: key);
+  late var appt;
+
+  @override
+  State<MainScreen> createState() => MainScreenState();
+}
+
+class MainScreenState extends State<MainScreen> {
+  String currentDate = "";
+
+  var _pages;
+  @override
+  void initState() {
+    var today = DateTime.now();
+    var dateStr = DateFormat('yyyy-MM-dd');
+    currentDate = dateStr.format(today);
+    _pages = [
+      HomePage(),
+      JsonDataGrid(),
+      WaitingRoom(
+        apptdate: null,
+      ),
+      Billinf()
+    ];
+
+    super.initState();
+  }
+
+  // ignore: prefer_final_fields
 
   @override
   Widget build(BuildContext context) {
@@ -128,7 +161,7 @@ class MainScreen extends StatelessWidget {
         break;
       case 1:
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => CalendarViewPage()),
+          MaterialPageRoute(builder: (context) => JsonData()),
         );
         break;
       case 2:

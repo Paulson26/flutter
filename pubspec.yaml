@@ -87,6 +87,9 @@ dependencies:
   badges: ^2.0.3
   syncfusion_localizations: ^20.2.49
   desktop_window: ^0.4.0
+  connectivity: ^3.0.6
+  time_machine: ^0.9.17
+  intl: ^0.17.0
  
 
 dev_dependencies:

@@ -177,7 +177,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                             print(responseJson);
                             Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(
-                                    builder: (context) => MainScreen()),
+                                    builder: (context) => MainScreen(
+                                          appt: null,
+                                        )),
                                 (route) => false);
                             Fluttertoast.showToast(
                                 msg: "Password Changed Successfully.",

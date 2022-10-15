@@ -366,7 +366,10 @@ class ReviewsClinicState extends State<ReviewsClinic> {
                     final responseJson = json.decode(respStr);
                     print(responseJson);
                     Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (context) => MainScreen()),
+                        MaterialPageRoute(
+                            builder: (context) => MainScreen(
+                                  appt: null,
+                                )),
                         (route) => false);
                     Fluttertoast.showToast(
                         msg:

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:my_thera/env.sample.dart';
@@ -53,6 +54,9 @@ class _LoginPageState extends State<LoginPage> {
         encoding: Encoding.getByName("utf-8"),
       );
       if (response.statusCode == 200) {
+        var today = DateTime.now();
+        var dateStr = DateFormat('yyyy-MM-dd');
+        var currentDate = dateStr.format(today);
         final responseJson = json.decode(response.body);
         final token = responseJson['data']['token'] as String;
         final username = responseJson['data']['user']['full_name'];
@@ -72,8 +76,10 @@ class _LoginPageState extends State<LoginPage> {
         await storage.write(key: 'email', value: email);
         print(responseJson);
 
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => MainScreen()));
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => MainScreen(
+                  appt: currentDate,
+                )));
       } else {
         throw Exception('Failed to load api');
       }

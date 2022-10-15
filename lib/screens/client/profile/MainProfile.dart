@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:get/get.dart';
 import 'package:my_thera/model/profileModel.dart';
 import 'package:my_thera/networkHandler.dart';
 import 'package:my_thera/screens/client/profile/ProfileScreen.dart';
@@ -51,32 +52,35 @@ class _MainProfileState extends State<MainProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 196, 222, 235),
-      appBar:
-          AppBar(centerTitle: true, title: Text('Client Profile'), actions: [
-        IconButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => CreatProfile(
-                        firstname: profileModel.firstname,
-                        middlename: profileModel.middlename,
-                        lastname: profileModel.lastname,
-                        profileimage: profileModel.profileimage,
-                      )),
-            );
-          },
-          icon: Icon(Icons.edit),
-        ),
-      ]
+      appBar: AppBar(
+          centerTitle: true,
+          automaticallyImplyLeading: true,
+          title: Text('Client Profile'),
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => CreatProfile(
+                            firstname: profileModel.firstname,
+                            middlename: profileModel.middlename,
+                            lastname: profileModel.lastname,
+                            profileimage: profileModel.profileimage,
+                          )),
+                );
+              },
+              icon: Icon(Icons.edit),
+            ),
+          ]
 
-              // leading: IconButton(
-              //   icon: Icon(Icons.arrow_back),
-              //   onPressed: () {},
-              //   color: Colors.black,
-              // ),
+          // leading: IconButton(
+          //   icon: Icon(Icons.arrow_back),
+          //   onPressed: () {},
+          //   color: Colors.black,
+          // ),
 
-              ),
+          ),
       body: circular
           ? Center(child: CircularProgressIndicator())
           : ListView(

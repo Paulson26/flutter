@@ -20,7 +20,9 @@ class MyApp extends StatelessWidget {
         '/': (context) => LoginPage(),
         '/login': (context) => LoginPage(),
         '/home': (context) => MainProfile(),
-        '/dashboard': (context) => MainScreen(),
+        '/dashboard': (context) => MainScreen(
+              appt: null,
+            ),
       },
       theme: ThemeData(
         // This is the theme of your application.

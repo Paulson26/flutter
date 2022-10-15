@@ -5,9 +5,6 @@ import 'package:http/http.dart' as http;
 import 'package:my_thera/screens/client/chatui/chat.dart';
 import 'dart:convert';
 
-import 'package:my_thera/screens/client/chatui/try_out.dart';
-import 'package:my_thera/screens/client/chatui/wats.dart';
-
 class list extends StatefulWidget {
   @override
   State<list> createState() => listState();
@@ -34,7 +31,7 @@ Future<List<Message>> fetchResults() async {
       'clinic_code': '$cliniccode'
     },
   );
-  print(response.body);
+
   var resultsJson = json.decode(response.body).cast<Map<String, dynamic>>();
   List<Message> applist =
       await resultsJson.map<Message>((json) => Message.fromJson(json)).toList();

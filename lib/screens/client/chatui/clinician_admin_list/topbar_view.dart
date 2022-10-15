@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:my_thera/screens/client/chatui/clinician_admin_list/clinic_admin_view.dart';
 import 'package:my_thera/screens/client/chatui/clinician_admin_list/clinician_view.dart';
 import 'package:my_thera/screens/client/chatui/list_clinician_clinic.dart';
-import 'package:my_thera/screens/message/chat.dart';
 
 class ChatWith extends StatefulWidget {
   @override

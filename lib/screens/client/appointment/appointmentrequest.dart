@@ -21,19 +21,19 @@ class Appointmentrequest extends StatefulWidget {
 }
 
 class _AppointmentrequestState extends State<Appointmentrequest> {
-  GlobalKey<FormState> _oFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _oFormKey = GlobalKey<FormState>();
   late TextEditingController _controller1;
   late TextEditingController _controller2;
   late TextEditingController _controller3;
   late TextEditingController _controller4;
   final _notesController = TextEditingController();
 
-  String _valueChanged1 = '';
-  String _valueToValidate1 = '';
-  String _valueSaved1 = '';
-  String _valueChanged2 = '';
-  String _valueToValidate2 = '';
-  String _valueSaved2 = '';
+  final String _valueChanged1 = '';
+  final String _valueToValidate1 = '';
+  final String _valueSaved1 = '';
+  final String _valueChanged2 = '';
+  final String _valueToValidate2 = '';
+  final String _valueSaved2 = '';
   String _valueChanged3 = '';
   String _valueToValidate3 = '';
   String _valueSaved3 = '';
