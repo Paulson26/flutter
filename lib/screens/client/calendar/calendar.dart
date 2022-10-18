@@ -283,16 +283,13 @@ class CalendarExample extends State<OnlineJsonData> {
     String appttime = DateFormat("HH:mm:ss").format(draggingTime);
 
     data.add({
-      'days': 0,
-      'milliseconds': diff2,
-      'months': diffr.months,
-      'years': diffr.years,
       "newdate": apptdate,
       "newtime": appttime,
       "durtn": appointment.recurrenceId
     });
     print(data);
-    final uri = Uri.parse('http://10.0.2.2:8000/api/v1/appointments/');
+    final uri = Uri.parse(
+        'http://10.0.2.2:8000/api/v1/update-time-status-flutterdrag/');
     final response = await http.put(
       uri,
       headers: {
